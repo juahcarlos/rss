@@ -1,0 +1,50 @@
+<rss xmlns:yandex="http://news.yandex.ru" xmlns:media="http://search.yahoo.com/mrss/" xmlns:turbo="http://turbo.yandex.ru" version="2.0">
+	<channel>
+		<title>NEWSru.com :: Все новости</title>
+		<link>https://www.newsru.com</link>
+		<description>Все новости России и мира от NEWSru.com.</description>
+        <language>ru</language>
+        
+
+{% for n in news %}	
+        <item turbo="true">
+				<link>https://www.newsru.com/{{ n.eng_name }}/{{ n.date_create|date:'dbY' }}/{{ n.page_name }}.html?utm_source=yandex_turbo</link>
+				<category>{{ n.topic }}</category>
+				<pubDate>{{ n.date_create|date:'D, d b Y H:i:s +0300' }}</pubDate>
+				{% if n.eng_name == 'blog' %}
+				<turbo:source>{{ n.blog_url }}</turbo:source>
+				<author>{{ n.author|safe }}</author>
+				{% endif %} 
+				<turbo:content>
+					<![CDATA[
+						<header>
+							<h1>{{ n.title|safe }}</h1>
+								<menu>
+									<a href="https://www.newsru.com/russia">В Росссии</a>
+									<a href="https://www.newsru.com/world">В мире</a>
+									<a href="https://www.newsru.com/finance">Экономика</a>
+									<a href="https://www.newsru.com/dossiers/154/">Религия</a>
+									<a href="https://www.newsru.com/dossiers/30/">Криминал</a>
+									<a href="https://www.newsru.com/sport">Спорт</a>
+									<a href="https://www.newsru.com/cinema">Культура</a>
+									<a href="https://newsru.com/blog">Мнения</a>
+									<a href="https://newsru.com/auto">Авто</a>
+									<a href="https://newsru.com/hitech">Технологии</a>
+									<a href="https://newsru.com/realty">Недвижимость</a>
+							</menu>
+						</header>
+						{% for pht in n.phts %}
+						<figure>
+							<img src="{{pht.url}}" />
+							<figcaption>{{pht.source_name}}</figcaption>
+						</figure>
+						{% endfor %}
+						<div data-block="share"></div>
+									<p>{{ n.text|safe }}</p>
+					]]>
+				</turbo:content>
+			</item>
+{% endfor %}
+
+</channel>
+</rss>

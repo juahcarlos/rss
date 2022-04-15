@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% if interfax or yandex %}<rss xmlns:yandex="http://news.yandex.ru" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">{% elif mail %}<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">{% elif rambler %}<rss xmlns:rambler="http://news.rambler.ru" version="2.0">{% else %}<rss version="2.0">{% endif %}
+{% if not main and not interfax and not yandex and not mail and not rambler %}
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:media="http://search.yahoo.com/mrss/">
+{% endif %}<channel>
+	<title>NEWSru.com :: {{topic_rus_name}}</title>
+	<link>https://www.newsru.com</link>
+	<description>Все новости России и мира от NEWSru.com.</description>
+	{% if not mail and not yandex and not interfax %}<lastBuildDate>{{ now|date:'D, d M Y H:i:s +0300' }}</lastBuildDate>{% endif %}
+	{% if yandex %}<yandex:analytics type="Yandex" id="37289910"></yandex:analytics>
+	<yandex:adNetwork type="Yandex" id="R-A-233931-1"></yandex:adNetwork>
+	<yandex:analytics type="Google" id="UA-86394340-1"></yandex:analytics>	{% endif %}
+	{% if main or interfax or rambler %}<image>
+		<title>NEWSru.com :: {{topic_rus_name}}</title>
+		<url>http://static.newsru.com/v2/img/d100-75/newsrucom.png</url>
+		<link>https://www.newsru.com</link>
+		<width>100</width>
+		<height>75</height>
+		<description>NEWSru.com</description>
+	</image>{% endif %}
+	{% autoescape on %}
+	{% for n in news %}
+	<item{% if yandex %} turbo="true"{% endif %}>
+		<title>{% if yandex %}<![CDATA[{% endif %}{{ n.title }}{% if yandex %}]]>{% endif %}</title>
+		<pubDate>{{ n.date_create|date:'D, d M Y H:i:s +0300' }}</pubDate>
+		<link>{{n.host}}/{{ n.eng_name }}/{{ n.date_create|date:'dbY' }}/{% if n.edition %}{{n.edition}}/{% endif %}{{ n.page_name }}.html?utm_source={% if yandex %}yandex_turbo{% elif interfax %}interfax_rss{% else %}rss{% endif %}</link>
+		<description><![CDATA[{{ n.anons }}]]></description><category>{{ n.topic_rus }}</category>
+		{% if not yandex and not interfax %}<guid isPermaLink="true">{{n.host}}/{{ n.eng_name }}/{{ n.date_create|date:'dbY' }}/{% if n.edition %}{{n.edition}}/{% endif %}{{ n.page_name }}{% if n.topic != 'Медицина' %}.html{% endif %}?utm_source=rss</guid>{% endif %}{% block content %}{% endblock %}
+	</item>
+{% endfor %}
+{% endautoescape %}
+</channel>
+
+</rss>

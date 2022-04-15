@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}{% if yandex or mail %}<amplink>https://www.newsru.com/amp/{{ n.eng_name }}/{{ n.date_create|date:'dbY' }}/{{ n.page_name }}.html</amplink>{% endif %}{% if interfax or yandex %}	<pdalink>https://www.newsru.com/{{ n.eng_name }}/{{ n.date_create|date:'dbY' }}/{{ n.page_name }}.html</pdalink>{% endif %}{% if interfax or mail or rambler %}{% for pht in n.phts %}<enclosure url="{{pht.url}}" type="image/jpeg" />{% endfor %}{% endif %}{% if interfax or yandex %}<yandex:full-text><![CDATA[ {{ n.text|safe }} ]]></yandex:full-text>{% elif rambler %}<rambler:full-text><![CDATA[ {{ n.text|safe }} ]]>{% endif %}{% if not main and not mail and not rambler and not yandex and not interfax %}{% for pht in n.phts %}			
+			<figure>
+				<img src="{{pht.url}}" />
+				<figcaption>{{pht.source_name}}</figcaption>
+			</figure>        {% endfor %}{% endif %}
+			{% if google %}<content type="html">
+				<![CDATA[{{ n.text|safe }}]]>
+			</content>{% endif %}{% endblock %}
