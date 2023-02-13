@@ -1,0 +1,83 @@
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>NEWSru.com</title>
+    <link>https://newsru.com/</link>
+    <description>Все новости России и мира от NEWSru.com.</description>
+    <language>ru-ru</language>
+    <lastBuildDate>{{now}}+03:00</lastBuildDate>
+
+		{% for n in news %}
+		<item>
+			<title>{{ n.title }}</title>
+			<link>{{base_url}}{{ n.eng_name }}/{{ n.date_create|date:'dbY' }}/{{ n.page_name }}.html?utm_source=rss</link>
+			<guid>{{n.guid}}</guid>			
+			<pubDate>{{ n.date_create|date:'Y:m:d' }}T{{ n.date_create|date:'H:i:s' }}+03:00</pubDate>
+			<author>Редакция</author>
+			<description>{{ n.anons|safe }}</description>
+			<content:encoded>
+			<![CDATA[
+				<!doctype html>
+				<html lang="en" prefix="op: http://media.facebook.com/op#">
+				<head>
+					<meta charset="utf-8">
+					<link rel="canonical" href="{{base_url}}{{ n.eng_name }}/{{ n.date_create|date:'dbY' }}/{{ n.page_name }}.html">
+					<meta property="fb:article_style" content="myarticlestyle">
+					<meta property="fb:use_automatic_ad_placement" content="enable=true ad_density=default" />
+				</head>
+				<body>
+						<article>
+							  <header>
+								  <section class="op-ad-template">
+										<figure class="op-ad">
+										  <iframe width="300" height="250" style="border:0; margin:0;" src="https://www.facebook.com/adnw_request?placement=290692564776142_290692591442806&adtype=banner300x250"></iframe>
+										</figure>
+										<figure class="op-ad op-ad-default">
+										  <iframe width="300" height="250" style="border:0; margin:0;" src="https://www.facebook.com/adnw_request?placement=290692564776142_290697808108951&adtype=banner300x250"></iframe>
+										</figure>
+										<figure class="op-ad">
+										  <iframe width="300" height="250" style="border:0; margin:0;" src="https://www.facebook.com/adnw_request?placement=290692564776142_290908131421252&adtype=banner300x250"></iframe>
+										</figure>
+									</section>
+								<time class="op-published" datetime="{{ n.date_create|date:'Y:m:d' }}T{{ n.date_create|date:'H:i:s' }}">{{n.date_create|date:'F d, H:i'}}PM</time>
+								<time class="op-modified" datetime="{{ n.date_modify|date:'Y:m:d' }}T{{ n.date_modify|date:'H:i:s' }}">{{n.date_modify|date:'F d, H:i'}}</time>
+								<h1>{{n.title|safe}}</h1>
+							  </header>
+					{% for pht in n.phts %}  
+						<figure>
+							<img src={{pht.url}} />
+						</figure>
+					{% endfor %}
+
+					<p> {{ n.text|safe }} </p>
+						<figure class="op-tracker">
+								<iframe>
+								<!-- Rating@Mail.ru counter -->
+									<script type="text/javascript">
+									var _tmr = window._tmr || (window._tmr = []);
+									_tmr.push({id: "91013", type: "pageView", start: (new Date()).getTime()});
+									(function (d, w, id) {
+									if (d.getElementById(id)) return;
+									var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+									ts.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//top-fwz1.mail.ru/js/code.js";
+									var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+									if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+									})(document, window, "topmailru-code");
+									</script><noscript><div style="position:absolute;left:-10000px;">
+									<img src="//top-fwz1.mail.ru/counter?id=91013;js=na" style="border:0;" height="1" width="1" alt="Рейтинг@Mail.ru" />
+									</div></noscript>
+									<!-- //Rating@Mail.ru counter -->
+								</iframe>
+							</figure>
+						<footer></footer>
+					</article>
+				</body>
+				</html> 
+			]]>
+			</content:encoded>
+
+</item>
+{% endfor %}
+
+</channel>
+
+</rss>

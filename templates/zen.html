@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+xmlns:content="http://purl.org/rss/1.0/modules/content/"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:media="http://search.yahoo.com/mrss/"
+xmlns:atom="http://www.w3.org/2005/Atom"
+xmlns:georss="http://www.georss.org/georss">
+<channel>
+    <title>NEWSru.com :: Все новости</title>
+    <link>https://www.newsru.com</link>
+    <description>Все новости России и мира от NEWSru.com.</description>
+
+            {% for n in news %}
+            <item>
+                <title><![CDATA[{{ n.title }}]]></title>
+                <pubDate>{{ n.date_create|date:'D, d b Y H:i:s +0300' }}</pubDate>
+				<pdalink>{{base_url}}{{ n.eng_name }}/{{ n.date_create|date:'dbY' }}/{{ n.page_name }}.html</pdalink>
+                <guid>{{n.guid}}</guid>
+                <link>{{base_url}}{{ n.eng_name }}/{{ n.date_create|date:'dbY' }}/{{ n.page_name }}.html?utm_source=yandex_zen</link>
+				<media:rating scheme="urn:simple">nonadult</media:rating>
+				<category>{{n.topic}}</category>
+				{% for pht in n.phts %}  
+					<enclosure url="{{pht.url}}" type="image/jpeg" />
+				{% endfor %}  
+                <description><![CDATA[{{ n.anons|safe }}]]></description>
+				<content:encoded><![CDATA[
+							{% for pht in n.phts %}
+								<figure>
+									<img src="{{pht.url}}" />
+									<figcaption>{{pht.source_name}}</figcaption>
+								</figure>
+							{% endfor %} 
+							<p>{{ n.text|safe }}</p>
+						
+				]]></content:encoded>
+
+			</item>
+{% endfor %}
+
+</channel>
+
+</rss>
